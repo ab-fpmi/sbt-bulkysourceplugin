@@ -7,11 +7,18 @@ lazy val root = (project in file("."))
     scalaVersion := scalaVersion.value,
     bulkyThresholdInLines := 30,
     TaskKey[Unit]("check") := {
-      val result = (Compile / bulkySources).value
-      if (result.length != 1) {
-        println(result)
+      val resultCompile = (Compile / bulkySources).value
+      if (resultCompile.length != 2) {
+        println(resultCompile)
         sys.error("Unexpected result")
       }
+
+      val resultTest = (Test / bulkySources).value
+      if (resultTest.length != 0) {
+        println(resultTest)
+        sys.error("Unexpected result")
+      }
+
       ()
     }
   )
